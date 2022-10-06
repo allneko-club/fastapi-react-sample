@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {createContext, useContext, useState} from 'react';
-import {getLocalToken, removeLocalToken, saveLocalToken} from 'localStorage'
+import {getLocalToken, removeLocalToken, saveLocalToken} from 'lib/storage'
 import {api} from 'api/backend-api'
 
 let AuthContext = createContext(undefined);
@@ -14,11 +14,8 @@ export default function AuthProvider(props) {
   const [isSuperuser, setIsSuperuser] = useState(false)
 
   useEffect(() => {
-    // const initUser = async (token) => {await getMe(token)};
-    // const token = getLocalToken();
-    // if (token) {
-    //   initUser(token);
-    // }
+    const loadUser = async () => {await getMe()};
+    getLocalToken() && loadUser();
     }, []);
 
   let login = async (data) => {

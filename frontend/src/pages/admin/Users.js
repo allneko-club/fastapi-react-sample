@@ -1,5 +1,4 @@
 import React from 'react'
-import {useEffect} from 'react'
 import {api} from 'api/backend-api'
 import {Link as RouterLink} from 'react-router-dom'
 import {Button, Link} from '@mui/material'

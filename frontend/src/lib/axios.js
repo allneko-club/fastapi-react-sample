@@ -1,7 +1,7 @@
 // のfastapi-sample/frontend/src/api.jsと共通にしたい
 
 import Axios from 'axios';
-import {getLocalToken} from 'localStorage'
+import {getLocalToken} from 'lib/storage'
 import {apiUrl} from 'config'
 
 function authRequestInterceptor(config) {

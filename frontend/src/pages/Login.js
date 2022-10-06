@@ -1,11 +1,10 @@
 import React from 'react';
-import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Button, Link, TextField } from '@mui/material'
 
-import {Link as RouterLink, useNavigate} from 'react-router-dom'
+import {Link as RouterLink, Navigate, useNavigate} from 'react-router-dom'
 import {useAuth} from 'components/AuthProvider'
 import MainLayout from 'components/layout/MainLayout'
 import {useMutation} from 'react-query'
@@ -13,10 +12,6 @@ import {useMutation} from 'react-query'
 export default function Login() {
   const auth = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    auth.user && navigate('/')
-  }, [auth]);
 
   const schema = yup.object({
     username: yup.string().required(),
@@ -41,6 +36,8 @@ export default function Login() {
 
   return (
     <MainLayout title="Login">
+      {auth.user && <Navigate to='/' replace={true} />}
+
       {mutation.isError && <div>{mutation.error}</div>}
       <div>
         <TextField
