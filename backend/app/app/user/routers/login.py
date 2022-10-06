@@ -57,8 +57,8 @@ async def test_token(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@router.post("/recover-password/{email}", response_model=MsgSchema)
-def recover_password(email: str, db: Session = Depends(get_db)):
+@router.post("/reset-password/{email}", response_model=MsgSchema)
+def reset_password(email: str, db: Session = Depends(get_db)):
     user = crud_user.get_by_email(db, email=email)
 
     if not user:
@@ -73,8 +73,8 @@ def recover_password(email: str, db: Session = Depends(get_db)):
     return {"msg": "Password recovery email sent"}
 
 
-@router.post("/reset-password/", response_model=MsgSchema)
-def reset_password(
+@router.post("/reset-password-confirm/", response_model=MsgSchema)
+def reset_password_confirm(
     token: str = Body(...),
     new_password: str = Body(...),
     db: Session = Depends(get_db),

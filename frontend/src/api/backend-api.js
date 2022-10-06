@@ -29,11 +29,11 @@ export const api = {
   async deleteUser(userId) {
     return axios.delete(`/api/users/${userId}`);
   },
-  async recoverPassword(email) {
-    return axios.post(`/api/recover-password/${email}`);
+  async resetPassword(email) {
+    return axios.post(`/api/reset-password/${email}`);
   },
-  async resetPassword(new_password, token) {
-    return axios.post(`/api/reset-password/`, {
+  async resetPasswordConfirm(new_password, token) {
+    return axios.post(`/api/reset-password-confirm/`, {
       new_password,
       token,
     });

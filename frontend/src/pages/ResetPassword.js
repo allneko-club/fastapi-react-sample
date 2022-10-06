@@ -21,7 +21,7 @@ export default function ResetPassword() {
   const {errors} = formState;
 
   const mutation = useMutation(
-    email => api.recoverPassword(email),
+    email => api.resetPassword(email),
     {onSuccess: async () => await navigate('/reset-password-done')}
   );
 
