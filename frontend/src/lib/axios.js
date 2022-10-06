@@ -1,5 +1,3 @@
-// のfastapi-sample/frontend/src/api.jsと共通にしたい
-
 import Axios from 'axios';
 import {getLocalToken} from 'lib/storage'
 import {apiUrl} from 'config'
@@ -18,9 +16,3 @@ export const axios = Axios.create({
 })
 
 axios.interceptors.request.use(authRequestInterceptor);
-axios.interceptors.response.use(
-  (response) => {
-    console.log(response.data);
-    return response;
-  }
-);
