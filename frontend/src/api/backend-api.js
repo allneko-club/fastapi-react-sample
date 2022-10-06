@@ -1,35 +1,4 @@
-// のfastapi-sample/frontend/src/api.jsと共通にしたい
-
-import Axios from 'axios';
-import {getLocalToken} from 'localStorage'
-
-const apiUrl = 'http://localhost:8000';
-
-// todo post時に withCredentials: true にする必要があるか？
-export const axios = Axios.create({
-  baseURL: apiUrl,
-})
-
-// todo interceptorsを使う方法もあるらしい https://www.miracleave.co.jp/contents/1654/react-jwt-axios-interceptors/
-function authHeaders(token) {
-  if(token){
-      return {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-  }
-  const localToken = getLocalToken();
-  if (localToken) {
-    return {
-      headers: {
-        Authorization: `Bearer ${localToken}`
-      }
-    }
-  } else {
-      return {headers: {}};
-  }
-}
+import {axios} from 'lib/axios'
 
 export const api = {
   async loginGetToken(username, password) {
@@ -39,23 +8,26 @@ export const api = {
 
     return axios.post(`/api/login/access-token`, params);
   },
-  async getMe(token) {
-    return axios.get(`/api/users/me`, authHeaders(token));
+  async getMe() {
+    return axios.get(`/api/users/me`);
   },
-  async updateMe(token, data) {
-    return axios.put(`/api/users/me`, data, authHeaders(token));
+  async updateMe(data) {
+    return axios.put(`/api/users/me`, data);
   },
-  async getUsers(token) {
-    return axios.get(`/api/users/`, authHeaders(token));
+  async getUsers() {
+    return axios.get(`/api/users/`);
   },
-  async updateUser(token, userId, data) {
-    return axios.put(`/api/users/${userId}`, data, authHeaders(token));
+  async getUser(userId) {
+    return axios.get(`/api/users/${userId}`);
   },
-  async createUser(token, data) {
-    return axios.post(`/api/users/`, data, authHeaders(token));
+  async updateUser(userId, data) {
+    return axios.put(`/api/users/${userId}`, data);
   },
-  async deleteUser(token, userId) {
-    return axios.delete(`/api/users/${userId}`, authHeaders(token));
+  async createUser(data) {
+    return axios.post(`/api/users/`, data);
+  },
+  async deleteUser(userId) {
+    return axios.delete(`/api/users/${userId}`);
   },
   async recoverPassword(email) {
     return axios.post(`/api/recover-password/${email}`);

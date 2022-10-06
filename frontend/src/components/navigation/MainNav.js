@@ -9,7 +9,7 @@ export default function MainNav() {
 
   const logout = async () => {
     await auth.logout();
-    navigate('/login');
+    await navigate('/login');
   }
 
   let nav = <Link component={RouterLink} to="/login/">Login</Link>;

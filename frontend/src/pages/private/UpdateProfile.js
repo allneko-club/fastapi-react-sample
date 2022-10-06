@@ -24,15 +24,11 @@ export default function UpdateProfile() {
   const {errors} = formState;
 
   const mutation = useMutation(
-    data => auth.updateMe(auth.user.token, data),
-{
-          onSuccess: async () => {
-            await navigate('/private/profile');
-          },
-        }
+    data => auth.updateMe(data),
+{onSuccess: async () => await navigate('/private/profile')}
   );
 
-  const onSubmit = data => mutation.mutate(data);
+  const onSubmit = values => mutation.mutate(values);
 
   return (
     <MainLayout title="Update Profile">
@@ -42,7 +38,7 @@ export default function UpdateProfile() {
           label='name'
           {...register('name')}
           defaultValue={auth.user.name}
-          error={'username' in errors}
+          error={'name' in errors}
           helperText={errors.name?.message}
         />
         <TextField

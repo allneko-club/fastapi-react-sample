@@ -37,7 +37,7 @@ export default function Login() {
         }
   );
 
-  const onSubmit = data => mutation.mutate(data);
+  const onSubmit = values => mutation.mutate(values);
 
   return (
     <MainLayout title="Login">

@@ -24,18 +24,14 @@ export default function ResetPasswordConfirm() {
   const {errors} = formState;
 
   const mutation = useMutation(
-    (password1) => {
+    (data) => {
       const token = searchParams.get("token");
-      api.resetPassword(password1, token)
+      api.resetPassword(data, token)
     },
-    {
-      onSuccess: async () => {
-        await navigate('/reset-password-confirm-done');
-      },
-    }
+    {onSuccess: async () => await navigate('/reset-password-confirm-done')}
   );
 
-  const onSubmit = data => mutation.mutate(data.password1);
+  const onSubmit = values => mutation.mutate(values.password1);
 
   return (
     <MainLayout title="Reset Password Confirm">

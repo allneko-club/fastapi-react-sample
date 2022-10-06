@@ -22,14 +22,10 @@ export default function ResetPassword() {
 
   const mutation = useMutation(
     email => api.recoverPassword(email),
-    {
-      onSuccess: async () => {
-        await navigate('/reset-password-done');
-      },
-    }
+    {onSuccess: async () => await navigate('/reset-password-done')}
   );
 
-  const onSubmit = data => mutation.mutate(data.email);
+  const onSubmit = values => mutation.mutate(values.email);
 
   return (
     <MainLayout title="Reset Password">

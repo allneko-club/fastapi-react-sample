@@ -1,32 +1,22 @@
 import React from 'react'
 import {useEffect} from 'react'
 import {api} from 'api/backend-api'
-import {Link as RouterLink, useNavigate} from 'react-router-dom'
+import {Link as RouterLink} from 'react-router-dom'
 import {Button, Link} from '@mui/material'
 import {useMutation, useQuery} from 'react-query'
-import {useAuth} from '../../components'
 import AdminLayout from 'components/layout/AdminLayout'
 
 
 export default function Users() {
-  const auth = useAuth();
-
-  useEffect(() => {
-  }, []);
-
-  const { isLoading, error, data: users } = useQuery(["getUsers"],
-    () => api.getUsers(auth.user.token).then(res => res.data)
+  const { isLoading, error, refetch, data: users } = useQuery(
+    ["getUsers"],
+    () => api.getUsers().then(res => res.data)
   );
-
   const mutation = useMutation(
-    data => api.deleteUser(auth.user.token, data),
-    {
-      onSuccess: async () => {
-        console.log('success delete user');
-      },
-    }
+    userId => api.deleteUser(userId),
+    {onSuccess: async () => await refetch()}
   );
-  const onSubmit = data => mutation.mutate(data);
+  const onSubmit = userId => mutation.mutate(userId);
 
   if (isLoading) return 'Loading...';
 

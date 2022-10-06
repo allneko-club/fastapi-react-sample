@@ -1,5 +1,5 @@
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useMutation, useQuery, useQueryClient} from 'react-query'
 import {api} from 'api/backend-api'
 import * as yup from 'yup'
@@ -7,14 +7,13 @@ import {useForm} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {Button, Checkbox, FormControlLabel, TextField} from '@mui/material'
 import AdminLayout from 'components/layout/AdminLayout'
-import {useAuth} from 'components'
 
 export default function UpdateUser() {
   const navigate = useNavigate();
-  const auth = useAuth()
+  let { userId } = useParams();
 
-  const { isLoading, error, data: user } = useQuery(["updateUser"],
-    () => api.getMe(auth.user.token).then(res => res.data)
+  const { isLoading, isFetching, error, data: user } = useQuery(["updateUser"],
+    () => api.getUser(userId).then(res => res.data)
   );
 
   const schema = yup.object({
@@ -32,7 +31,7 @@ export default function UpdateUser() {
 
   const queryClient = useQueryClient()
   const mutation = useMutation(
-    data => api.updateUser(auth.user.token, data),
+    data => api.updateUser(userId, data),
 {
           onSuccess: async () => {
             await queryClient.invalidateQueries(["updateUser"]);
@@ -41,9 +40,23 @@ export default function UpdateUser() {
         }
   );
 
-  const onSubmit = data => mutation.mutate(data);
+  const onSubmit = values => {
+    let data = {};
+    if (values.name) {
+      data.name = values.name;
+    }
+    if (values.email) {
+      data.email = values.email;
+    }
+    data.is_active = values.is_active;
+    data.is_superuser = values.is_superuser;
+    if (values.password1) {
+      data.password = values.password1;
+    }
+    mutation.mutate(data);
+  }
 
-  if (isLoading) return 'Loading...';
+  if (isLoading || isFetching) return 'Loading...';
 
   if (error) return 'An error has occurred: ' + error.message;
 
@@ -72,11 +85,11 @@ export default function UpdateUser() {
       <div>
         <FormControlLabel
           label="active"
-          control={<Checkbox {...register('is_active')} />}
+          control={<Checkbox defaultChecked={user.is_active} {...register('is_active')} />}
         />
         <FormControlLabel
           label="superuser"
-          control={<Checkbox {...register('is_superuser')} />}
+          control={<Checkbox defaultChecked={user.is_superuser} {...register('is_superuser')} />}
         />
       </div>
         <div>

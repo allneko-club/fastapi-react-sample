@@ -14,16 +14,16 @@ export default function AuthProvider(props) {
   const [isSuperuser, setIsSuperuser] = useState(false)
 
   useEffect(() => {
-    const initUser = async (token) => {await getMe(token)};
-    const token = getLocalToken();
-    if (token) {
-      initUser(token);
-    }
+    // const initUser = async (token) => {await getMe(token)};
+    // const token = getLocalToken();
+    // if (token) {
+    //   initUser(token);
+    // }
     }, []);
 
   let login = async (data) => {
-    const token = await loginGetToken(data.username, data.password);
-    await getMe(token);
+    await loginGetToken(data.username, data.password);
+    await getMe();
   }
 
   let logout = async () => {
@@ -33,32 +33,26 @@ export default function AuthProvider(props) {
   }
 
   let loginGetToken = async (username, password) => {
-    let token = '';
     await api.loginGetToken(username, password)
       .then((res) => {
-        token = res.data.access_token;
-        saveLocalToken(token);
+        saveLocalToken(res.data.access_token);
       }).catch((error) => {
         if (error.response && error.response.status === 400) {
           throw Error('username or password is invalid');
         }
       })
-    return token;
   }
 
-  let getMe = async (token) => {
-    let data = {token: token};
-    await api.getMe(token)
+  let getMe = async () => {
+    await api.getMe()
       .then((res) => {
-        Object.assign(data, res.data);
-        setUser(data);
-        setIsSuperuser(data.is_superuser)
+        setUser(res.data);
+        setIsSuperuser(res.data.is_superuser)
       })
   }
 
-  let updateMe = async (token, data) => {
-    // todo tokenも更新する必要があるか？
-    await api.updateMe(token, data)
+  let updateMe = async (data) => {
+    await api.updateMe(data)
       .then((res) => {
         setUser(res.data);
         setIsSuperuser(res.data.is_superuser)

@@ -24,7 +24,7 @@ export const adminRoutes = [
         element: <CreateUser />,
       },
       {
-        path: "users/update/:id",
+        path: "users/update/:userId",
         element: <UpdateUser />,
       },
     ],

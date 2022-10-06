@@ -1,6 +1,6 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useMutation, useQueryClient} from 'react-query'
+import {useMutation} from 'react-query'
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {useForm} from 'react-hook-form'
@@ -22,24 +22,23 @@ export default function CreateUser() {
       password2: yup.string().required().label('password (confirm)')
           .oneOf([yup.ref('password1')], 'Passwords do not match'),
   });
-
-  const {register, handleSubmit, formState} = useForm(
-    {resolver: yupResolver(schema)}
-  );
+  const {register, handleSubmit, formState} = useForm({resolver: yupResolver(schema)});
   const {errors} = formState;
 
-  const queryClient = useQueryClient()
   const mutation = useMutation(
-    data => api.createUser('', data),
-{
-          onSuccess: async () => {
-            await queryClient.invalidateQueries(["createUser"]);
-            await navigate('/admin/users');
-          },
-        }
+    data => api.createUser(data),
+{onSuccess: async () => await navigate('/admin/users')}
   );
 
-  const onSubmit = data => mutation.mutate(data);
+  const onSubmit = values => {
+    let data = {};
+    data.name = values.name;
+    data.email = values.email;
+    data.is_active = values.is_active;
+    data.is_superuser = values.is_superuser;
+    data.password = values.password1;
+    mutation.mutate(data);
+  }
 
   return (
     <AdminLayout title="Create User">

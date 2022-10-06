@@ -7,10 +7,8 @@ import {useMutation} from 'react-query'
 import {useNavigate} from 'react-router-dom'
 import {Button, TextField} from '@mui/material'
 import MainLayout from 'components/layout/MainLayout'
-import {useAuth} from 'components'
 
 export default function UpdatePassword() {
-  const auth = useAuth();
   const navigate = useNavigate();
 
   const schema = yup.object({
@@ -25,15 +23,11 @@ export default function UpdatePassword() {
   const {errors} = formState;
 
   const mutation = useMutation(
-    data => api.updateMe(auth.user.token, {password: data.password1}),
-    {
-      onSuccess: async () => {
-        await navigate('/private/profile');
-      },
-    }
+    data => api.updateMe(data),
+    {onSuccess: async () => await navigate('/private/profile')}
   );
 
-  const onSubmit = data => mutation.mutate(data);
+  const onSubmit = values => mutation.mutate({password: values.password1});
 
   return (
     <MainLayout title="Update Password">
