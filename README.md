@@ -1,34 +1,22 @@
 # FastAPI React Sample
 
-fastapiとReact v3 を使ったサンプルプロジェクト
+FastAPI と React を使ったサンプルプロジェクト
+[FastAPI Vue.js Sample](https://github.com/allneko-club/fastapi-vuejs-sample) のフロントエンドをReactにしたバージョンです。
 
-[Full Stack FastAPI and PostgreSQL](https://github.com/tiangolo/full-stack-fastapi-postgresql)を使って生成。しかし2020年以降更新されておらず、使用しているフレームワークやパッケージが古かったので最新のスタイルに大幅変更。
 
 ## Features
 
-### frontend
-* <a href="https://github.com/tiangolo/fastapi" class="external-link" target="_blank">**FastAPI**</a>
-* python 3.10
-* ドメイン駆動設計(DDD)風にディレクトリ構造を変更
-* **Secure password** hashing by default.
-* **JWT トークン認証**
-* **SQLAlchemy** models.
-* **Alembic** migrations.
-* **CORS** (Cross Origin Resource Sharing).
-* **Celery** worker that can import and use models and code from the rest of the backend selectively.
-* **Pytest** tests framework
-* **factory boy** model factory for tests.
-
 ### backend
-* **Vue.js v3** composition API Style
-* **VeeValidate v4**
-* **pinia v2**
-* **Vue-router**
-* Generated with **Vite**
-* **JWT Authentication** handling.
-* Not use UI Framework (include your favorite UI Framework easy)
-* Docker server based on **Nginx** (configured to play nicely with Vue-router).
-* .env file support at /backend/.env
+* <a href="https://github.com/tiangolo/fastapi" class="external-link" target="_blank">**FastAPI**</a>
+* [FastAPI Sample](https://github.com/allneko-club/fastapi-sample) をサブモジュールとして使用
+
+### frontend
+* **React v18**
+* **React Router v6**
+* **TanStack Query v4**
+* **JWT Authentication**
+* **MUI** Rezct UI tools
+* Docker server based on **Nginx**
 * common pages
   * Login, Logout
   * Admin view (superuser only), Private view (login user only).
@@ -46,10 +34,6 @@ fastapiとReact v3 を使ったサンプルプロジェクト
 * Load balancing between frontend and backend with **Traefik**, so you can have both under the same domain, separated by path, but served by different containers.
 * Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
 * GitLab **CI** (continuous integration), including frontend and backend testing.
-
-
-### 注意事項
-* デフォルトではメール機能をオフにしているため、パスワードリカバリーなどメールを送信する機能を使うとエラーが発生します。
 
 ---
 以下はプロジェクト生成時に作成された文章を編集したものです。localhostでの動作は確認しましたが、ドメイン名を変更するStagingやProductionパターンの動作は未確認です。
@@ -308,16 +292,16 @@ That variable will be used by the Docker Compose files.
 * Now open the file located at `./frontend/.env`. It would have a line like:
 
 ```
-VITE_APP_DOMAIN_DEV=localhost
+REACT_APP_DOMAIN_DEV=localhost
 ```
 
 * Change that line to the domain you are going to use, e.g.:
 
 ```
-VITE_APP_DOMAIN_DEV=localhost.tiangolo.com
+REACT_APP_DOMAIN_DEV=localhost.tiangolo.com
 ```
 
-That variable will make your frontend communicate with that domain when interacting with your backend API, when the other variable `VITE_APP_ENV` is set to `development`.
+That variable will make your frontend communicate with that domain when interacting with your backend API, when the other variable `REACT_APP_ENV` is set to `development`.
 
 After changing the two lines, you can re-start your stack with:
 
@@ -348,15 +332,15 @@ If you are only developing the frontend (e.g. other team members are developing 
 To do that, modify the file `./frontend/.env`, there's a section with:
 
 ```
-VITE_APP_ENV=development
-# VITE_APP_ENV=staging
+REACT_APP_ENV=development
+# REACT_APP_ENV=staging
 ```
 
 * Switch the comment, to:
 
 ```
-# VITE_APP_ENV=development
-VITE_APP_ENV=staging
+# REACT_APP_ENV=development
+REACT_APP_ENV=staging
 ```
 
 ---
